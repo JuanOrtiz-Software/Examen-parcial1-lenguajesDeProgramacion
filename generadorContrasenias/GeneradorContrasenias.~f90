@@ -1,0 +1,42 @@
+program GeneradorContrasenias
+    implicit none
+    character(len=200) :: minusculas, mayusculas, numeros, simbolos, caracteres
+    character(len=200) :: contrasena
+    integer :: longitud, i, pos
+    real :: r
+    character :: mayus, num, simb
+    character(len=1) :: pausa
+
+    minusculas = 'abcdefghijklmnopqrstuvwxyz'
+    mayusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    numeros    = '0123456789'
+    simbolos   = '!@#$%^&*()-_=+<>?'
+    caracteres = minusculas
+
+    print *, 'Longitud (8-16):'
+    read *, longitud
+    print *, 'Incluir mayusculas? (s/n):'
+    read *, mayus
+    print *, 'Incluir numeros? (s/n):'
+    read *, num
+    print *, 'Incluir simbolos? (s/n):'
+    read *, simb
+
+    if (mayus == 's') caracteres = trim(caracteres)//mayusculas
+    if (num == 's')   caracteres = trim(caracteres)//numeros
+    if (simb == 's')  caracteres = trim(caracteres)//simbolos
+
+    call random_seed()
+    contrasena = ''
+    do i = 1, longitud
+        call random_number(r)
+        pos = int(len_trim(caracteres) * r) + 1
+        contrasena(i:i) = caracteres(pos:pos)
+    end do
+
+    print *, 'Contraseña generada: ', trim(contrasena(1:longitud))
+
+    ! 🔹 Pausa para que no se cierre automáticamente
+    print *, 'Presiona ENTER para salir...'
+    read(*,*)
+end program GeneradorContrasenias
